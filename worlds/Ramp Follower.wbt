@@ -1,0 +1,233 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/OsbWood.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+
+WorldInfo {
+  info [
+    "In this example, the robot moves down a slope."
+    "The altimeter is used to record the robots height."
+  ]
+  title "Altimeter"
+  basicTimeStep 8
+  contactProperties [
+    ContactProperties {
+      material2 "body"
+      coulombFriction [
+        0
+      ]
+      softCFM 0.1
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.2697386894881805 -0.5738397758675999 0.7732715894337653 5.538267366831801
+  position -1.3027938487843664 0.7322307263554658 0.9385386981410703
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+}
+PointLight {
+  attenuation 0 0 1
+  intensity 0.6
+  location 0.6 0 0
+}
+DEF SLOPE Solid {
+  translation 0 0 0.15
+  rotation 0 1 0 -0.4
+  children [
+    Shape {
+      appearance OsbWood {
+        textureTransform TextureTransform {
+          scale 0.5 2
+        }
+      }
+      geometry DEF BOX0 Box {
+        size 0.8 0.2 0.02
+      }
+    }
+  ]
+  name "green box"
+  boundingObject USE BOX0
+}
+Robot {
+  translation 0.1530287430891767 4.02194935134195e-05 0.22566181590668552
+  rotation -0.24582897485431401 1.5412086084618473e-06 0.9693132182734855 3.1415864968905822
+  children [
+    Altimeter {
+    }
+    Pose {
+      translation 0 0 0.0415
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.0820075 0.364731 0.8
+            roughness 1
+            metalness 0
+          }
+          geometry DEF BODY Cylinder {
+            height 0.08
+            radius 0.045
+          }
+        }
+      ]
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position -10.671245205846514
+        axis 0 1 0
+        anchor 0 0 0.025
+      }
+      device [
+        RotationalMotor {
+          name "left wheel motor"
+          consumptionFactor 70
+        }
+        PositionSensor {
+          name "left wheel sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0 0.04499999999999983 0.025
+        rotation -0.15939062107879734 0.1593906880967302 -0.974263433810469 1.5968668695906771
+        children [
+          DEF WHEEL Pose {
+            rotation 0.577656895078166 0.5771968951617173 -0.5771968951617173 -2.093935
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 1 0 0
+                  roughness 1
+                  metalness 0
+                }
+                geometry Cylinder {
+                  height 0.01
+                  radius 0.025
+                }
+              }
+            ]
+          }
+        ]
+        name "left wheel"
+        boundingObject USE WHEEL
+        physics DEF PHYSICS_WHEEL Physics {
+          density -1
+          mass 0.05
+        }
+        linearVelocity -0.046060240436507395 7.244712974953129e-07 -0.019473123142998858
+        angularVelocity -2.6443024423531266e-05 -1.999990938936976 -1.1787722329419435e-05
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position -10.671245159810196
+        axis 0 1 0
+        anchor 0 0 0.025
+      }
+      device [
+        RotationalMotor {
+          name "right wheel motor"
+          consumptionFactor 70
+        }
+        PositionSensor {
+          name "right wheel sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0 -0.045 0.025
+        rotation -0.15939064293481292 0.15939070995274657 -0.9742634266591282 1.5968668769284375
+        children [
+          USE WHEEL
+        ]
+        boundingObject USE WHEEL
+        physics USE PHYSICS_WHEEL
+        linearVelocity -0.04605892613684768 7.244661590067663e-07 -0.01947427177933396
+        angularVelocity -2.6486144782143333e-05 -1.9999909222003702 -1.1853909578606226e-05
+      }
+    }
+    DistanceSensor {
+      translation 0.042 0.02 0.063
+      rotation 0 0 -1 -0.499205
+      children [
+        DEF SENSOR Pose {
+          rotation 0.577656895078166 0.5771968951617173 -0.5771968951617173 -2.093935
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.975691 0.981481 0.0252992
+                roughness 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.004
+                radius 0.008
+              }
+            }
+          ]
+        }
+      ]
+      name "ds0"
+      lookupTable [
+        0 1024 0
+        0.05 1024 0
+        0.15 0 0
+      ]
+      numberOfRays 2
+      aperture 1
+    }
+    DistanceSensor {
+      translation 0.042 -0.02 0.063
+      rotation 0 0 1 -0.500795
+      children [
+        USE SENSOR
+      ]
+      name "ds1"
+      lookupTable [
+        0 1024 0
+        0.05 1024 0
+        0.15 0 0
+      ]
+      numberOfRays 2
+      aperture 1
+    }
+    DEF SMILE Pose {
+      translation 0.036 0 0.025
+      rotation 0.25056300542381216 -0.9351130202419243 -0.25056300542381216 1.637834
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.721569 0.290196 0.290196
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.018
+            radius 0.009
+            subdivision 3
+          }
+        }
+      ]
+    }
+  ]
+  name "MyBot"
+  contactMaterial "body"
+  boundingObject Pose {
+    translation 0 0 0.0415
+    rotation 0 0 1 -1.570796
+    children [
+      USE BODY
+    ]
+  }
+  physics Physics {
+    density -1
+    mass 0.5
+  }
+  controller "python_code"
+  linearVelocity -0.046059447526488835 1.0300131956673931e-06 -0.019473623988160063
+  angularVelocity -1.3118277529120054e-05 9.355889688823984e-06 -1.4656950277841672e-05
+}
